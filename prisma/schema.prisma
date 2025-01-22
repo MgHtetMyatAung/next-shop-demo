@@ -1,0 +1,262 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  name      String?
+  role      Role       @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  orders    Order[]
+  reviews   Review[]
+  addresses Address[]
+  cartItems CartItem[]
+  wishlist  Wishlist[]
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  name       String
+  description String?
+  price       Float
+  stock       Int
+  status      ProductStatus @default(IN_STOCK) // Enum for stock status
+  published   Boolean       @default(false) // Publish/unpublish flag
+  image       String? // URL of the main image
+  gallery     Json? // Array of URLs for the product gallery
+  category    Category?      @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  brand       Brand?        @relation(fields: [brandId], references: [id])
+  brandId     Int?
+  promotion   Promotion?    @relation(fields: [promotionId], references: [id])
+  promotionId Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  reviews     Review[]
+  cartItems   CartItem[]
+  OrderItem   OrderItem[]
+  Wishlist    Wishlist[]
+  variants    Variant[] // One product can have many variants
+  attributes  Attribute[] // Additional attributes for the product
+
+  @@index([categoryId, promotionId, brandId])
+}
+
+model Variant {
+  id        Int         @id @default(autoincrement())
+  productId Int         @map("product_id")
+  product   Product     @relation(fields: [productId], references: [id])
+  size      String? // Size of the variant (e.g., "S", "M", "L")
+  color     String? // Color of the variant (e.g., "Red", "Blue")
+  sku       String      @unique // Unique identifier for the variant
+  price     Float? // Optional: Override price for the variant
+  stock     Int // Stock specific to the variant
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  OrderItem OrderItem[]
+
+  @@index([productId])
+}
+
+model Attribute {
+  id        Int      @id @default(autoincrement())
+  productId Int      @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String // Name of the attribute (e.g., "Material")
+  value     String // Value of the attribute (e.g., "Cotton")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Category {
+  id            Int        @id @default(autoincrement())
+  name          String     @unique
+  imageUrl      String?
+  description   String?
+  slug          String     @unique
+  parentId      Int? // Optional field to reference the parent category
+  parent        Category?  @relation("CategoryToSubcategory", fields: [parentId], references: [id], onDelete: Cascade)
+  subcategories Category[] @relation("CategoryToSubcategory")
+  products      Product[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([parentId])
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  user        User        @relation(fields: [userId], references: [id])
+  userId      Int
+  items       OrderItem[]
+  totalAmount Float
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int      @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  variantId Int?     @map("variant_id") // Optional if the product has variants
+  variant   Variant? @relation(fields: [variantId], references: [id])
+  quantity  Int
+  price     Float // Store the price at the time of order (to account for price changes)
+  total     Float // quantity * price
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  rating    Int      @default(1) // Range: 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId, userId])
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+
+  @@index([userId])
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  street    String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  createdAt DateTime @default(now())
+
+  @@index([userId, productId])
+}
+
+model Brand {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  logoUrl     String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Promotion {
+  id          Int           @id @default(autoincrement())
+  code        String        @unique // e.g., "SUMMER2025"
+  title       String // Promotion title
+  description String? // Optional description
+  type        PromotionType // ENUM: DISCOUNT, CASHBACK, BUY1GET1
+  discount    Float? // For percentage or fixed amount discounts
+  cashback    Float? // For cashback promotions
+  isBOGO      Boolean? // True if "Buy 1 Get 1" applies
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  products    Product[] // Associated products
+}
+
+model Setting {
+  id                      Int          @id @default(autoincrement())
+  storeName               String       @default("My E-Commerce Store")
+  defaultLanguage         LanguageType @default(ENGLISH) // Language support
+  allowOutOfStockPurchase Boolean      @default(false) // Allow purchases for out-of-stock items
+  autoPublish             Boolean      @default(false) // Automatically publish new products
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
+}
+
+model Language {
+  id           Int           @id @default(autoincrement())
+  code         String        @unique // 'en' for English, 'my' for Myanmar
+  name         String // 'English', 'Myanmar'
+  translations Translation[]
+}
+
+model Translation {
+  id         Int      @id @default(autoincrement())
+  key        String // 'product.name', 'category.name', etc.
+  value      String // Translated value
+  languageId Int
+  language   Language @relation(fields: [languageId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PromotionType {
+  DISCOUNT // Percentage or fixed discount
+  CASHBACK // Cashback offers
+  BUY1GET1 // Buy One Get One Free
+}
+
+enum ProductStatus {
+  IN_STOCK
+  OUT_OF_STOCK
+}
+
+enum LanguageType {
+  ENGLISH
+  MYANMAR
+}
