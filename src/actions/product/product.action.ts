@@ -17,7 +17,7 @@ export async function createProduct(data: ProductType) {
         published: data.published,
       },
     });
-    revalidatePath("/");
+    revalidatePath("/product");
     return { success: true };
   } catch (error) {
     console.log("error");
@@ -55,6 +55,89 @@ export async function getProducts({
 
     return { success: true, products, totalPages, totalItems };
   } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getProductDetail(id: number) {
+  try {
+    if (!id) {
+      return { success: false };
+    }
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        published: true,
+        status: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        brand: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+    return { success: true, product };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function updateProduct(data: ProductType) {
+  try {
+    if (!data.id) {
+      return { success: false };
+    }
+    const product = await prisma.product.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data.name,
+        description: data.description,
+        price: Number(data.price),
+        stock: Number(data.stock),
+        categoryId:
+          Number(data.categoryId) !== 0 ? Number(data.categoryId) : null,
+        brandId: Number(data.brandId) !== 0 ? Number(data.brandId) : null,
+        published: data.published,
+      },
+    });
+    revalidatePath("/");
+    return { success: true, product };
+  } catch (error) {
+    console.log("error");
+    return { success: false };
+  }
+}
+
+export async function deleteProduct(id: number) {
+  try {
+    if (!id) {
+      return { success: false };
+    }
+    await prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath("/product");
+    return { success: true };
+  } catch (error) {
+    console.log("error");
     return { success: false };
   }
 }

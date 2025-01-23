@@ -2,14 +2,17 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./sidebar/AppSideBar";
 import DashboardMenu from "./menu/DashboardMenu";
+import { useState } from "react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <SidebarProvider>
+    <SidebarProvider open={open} onOpenChange={setOpen}>
       <AppSidebar />
       <main className=" w-full relative scroll-bar-fit">
         <DashboardMenu />
