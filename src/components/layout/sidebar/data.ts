@@ -1,4 +1,6 @@
 import {
+  Archive,
+  Bolt,
   BriefcaseBusiness,
   Calendar,
   CalendarCheck,
@@ -120,7 +122,12 @@ export const controlMenuItems = [
   {
     title: "Variant",
     url: "/variant",
-    icon: CirclePlus,
+    icon: Archive,
+  },
+  {
+    title: "Property",
+    url: "/property",
+    icon: Bolt,
   },
   {
     title: "Brand",
@@ -129,7 +136,7 @@ export const controlMenuItems = [
   },
   {
     title: "Promotion",
-    url: "#",
+    url: "/promotion",
     icon: HandCoins,
   },
   //   {

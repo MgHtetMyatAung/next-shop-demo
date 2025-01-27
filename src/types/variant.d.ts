@@ -1,9 +1,13 @@
 type Variant = {
-  id: string;
-  name: string;
-  description: string;
+  id?: number;
+  color: string;
+  size: string;
+  stock: number;
   price: number;
-  image: string;
-  category: string;
-  quantity: number;
+  productId: number;
+};
+
+type VariantValue = {
+  key: string;
+  value: string;
 };

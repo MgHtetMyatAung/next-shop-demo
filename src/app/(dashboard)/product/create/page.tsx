@@ -7,11 +7,6 @@ export default function CreateProductPage() {
     <div>
       <BackBtn />
       <div className=" p-3 space-y-3">
-        <div>
-          <h3 className=" text-lg sm:text-2xl font-medium">
-            Create New Product
-          </h3>
-        </div>
         <CreateProductForm />
       </div>
     </div>

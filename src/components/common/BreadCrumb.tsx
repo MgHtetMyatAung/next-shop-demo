@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Fragment } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,7 +10,13 @@ import {
 } from "../ui/breadcrumb";
 import { usePathname } from "next/navigation";
 
-export default function BreadCrumb({ title }: { title: string }) {
+export default function BreadCrumb({
+  title,
+  links,
+}: {
+  title: string;
+  links?: { name: string; link: string }[];
+}) {
   const pathname = usePathname();
   return (
     <Breadcrumb>
@@ -22,6 +28,17 @@ export default function BreadCrumb({ title }: { title: string }) {
         <BreadcrumbItem>
           <BreadcrumbLink href="/components">Components</BreadcrumbLink>
         </BreadcrumbItem> */}
+        {links &&
+          links.map((item) => (
+            <Fragment key={item.name}>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={item.link || "#"}>
+                  {item.name}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </Fragment>
+          ))}
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage>{title}</BreadcrumbPage>

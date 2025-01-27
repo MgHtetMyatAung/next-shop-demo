@@ -15,10 +15,11 @@ export async function createProduct(data: ProductType) {
           Number(data.categoryId) !== 0 ? Number(data.categoryId) : null,
         brandId: Number(data.brandId) !== 0 ? Number(data.brandId) : null,
         published: data.published,
+        out_of_stock: data.out_of_stock,
       },
     });
     revalidatePath("/product");
-    return { success: true };
+    return { success: true, product };
   } catch (error) {
     console.log("error");
     return { success: false };
@@ -46,7 +47,7 @@ export async function getProducts({
         price: true,
         stock: true,
         published: true,
-        status: true,
+        out_of_stock: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -75,17 +76,29 @@ export async function getProductDetail(id: number) {
         price: true,
         stock: true,
         published: true,
-        status: true,
+        out_of_stock: true,
+        brandId: true,
+        categoryId: true,
         category: {
           select: {
             id: true,
             name: true,
+            slug: true,
           },
         },
         brand: {
           select: {
             id: true,
             name: true,
+          },
+        },
+        variants: {
+          select: {
+            id: true,
+            price: true,
+            stock: true,
+            color: true,
+            size: true,
           },
         },
       },
@@ -114,6 +127,7 @@ export async function updateProduct(data: ProductType) {
           Number(data.categoryId) !== 0 ? Number(data.categoryId) : null,
         brandId: Number(data.brandId) !== 0 ? Number(data.brandId) : null,
         published: data.published,
+        out_of_stock: data.out_of_stock,
       },
     });
     revalidatePath("/");

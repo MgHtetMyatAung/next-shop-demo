@@ -1,6 +1,5 @@
 "use client";
-
-import { deleteProduct } from "@/actions/product/product.action";
+import { deleteVariant } from "@/actions/variant/variant.action";
 import LoadingUiBtn from "@/components/common/LoadingUiBtn";
 import {
   AlertDialog,
@@ -14,28 +13,26 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function DeleteProductBtn({
+export default function DeleteVariantBtn({
   id,
   reFresh,
 }: {
   id: number;
   reFresh: () => void;
 }) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const response = await deleteProduct(id);
+      const response = await deleteVariant(id);
       if (response.success) {
-        reFresh();
-        toast.success("Product deleted Successfully");
+        toast.success("Variant Deleted Successfully");
         setIsOpen(false);
+        reFresh();
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -59,7 +56,7 @@ export default function DeleteProductBtn({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>
+          <AlertDialogAction onClick={handleDelete} disabled={loading}>
             {loading ? <LoadingUiBtn /> : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>

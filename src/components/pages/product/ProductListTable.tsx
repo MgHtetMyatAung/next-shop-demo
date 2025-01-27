@@ -12,7 +12,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BadgeCheck, BadgeX, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgeX,
+  ChevronLeft,
+  ChevronRight,
+  Pen,
+  SquarePen,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import useProducts from "@/hooks/useProducts";
 import TableSkeleton from "@/components/skeleton/TableSkeleton";
@@ -20,7 +27,7 @@ import DeleteProductBtn from "@/components/pages/product/DeleteProductBtn";
 
 export default function ProductListTable() {
   const [currentPage, handlePageChange] = useState(1);
-  const { products, totalPages, loading } = useProducts({
+  const { products, totalPages, loading, reFocus } = useProducts({
     page: currentPage,
     limit: 8,
   });
@@ -93,18 +100,34 @@ export default function ProductListTable() {
                         <TableCell>{product.stock}</TableCell>
                         <TableCell
                           className={`${
-                            product.status === "IN_STOCK"
+                            product.out_of_stock === false
                               ? " text-green-600"
                               : " text-red-500"
                           }`}
                         >
-                          {product.status}
+                          {product.out_of_stock ? "Out of Stock" : "In Stock"}
                         </TableCell>
                         <TableCell className="text-right">
                           {product.price} MMK
                         </TableCell>
-                        <TableCell className="text-right space-x-2">
-                          <DeleteProductBtn id={product.id} />
+                        <TableCell className=" flex justify-end items-center space-x-3">
+                          <button>
+                            <Link
+                              href={`/product/${product.id}`}
+                              className=" underline"
+                            >
+                              View
+                            </Link>
+                          </button>
+                          <button>
+                            <Link href={`/product/edit?id=${product.id}`}>
+                              <SquarePen className=" size-5" />
+                            </Link>
+                          </button>
+                          <DeleteProductBtn
+                            reFresh={reFocus}
+                            id={product.id!}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}

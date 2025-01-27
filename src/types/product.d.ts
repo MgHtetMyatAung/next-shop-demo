@@ -1,5 +1,5 @@
 type ProductType = {
-  id: number;
+  id?: number;
   name: string;
   description?: string | null;
   price: number;
@@ -7,5 +7,5 @@ type ProductType = {
   categoryId?: number | null;
   brandId?: number | null;
   published: boolean;
-  status: "IN_STOCK" | "OUT_OF_STOCK";
+  out_of_stock: boolean;
 };

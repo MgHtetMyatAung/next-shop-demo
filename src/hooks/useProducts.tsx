@@ -14,6 +14,7 @@ export default function useProducts({
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [reFresh, setReFresh] = useState(false);
   const getProductLists = async () => {
     setLoading(true);
     try {
@@ -33,8 +34,10 @@ export default function useProducts({
     }
   };
 
+  const reFocus = () => setReFresh((prev) => !prev);
+
   useEffect(() => {
     getProductLists();
-  }, [page, limit]);
-  return { products, loading, totalPages, totalItems };
+  }, [page, limit, reFresh]);
+  return { products, loading, totalPages, totalItems, reFocus };
 }
