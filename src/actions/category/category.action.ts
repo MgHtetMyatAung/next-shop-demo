@@ -14,6 +14,7 @@ export async function createCategory(data: CategoryType) {
     });
 
     revalidatePath("/category");
+    revalidatePath("/");
     return { success: true, category };
   } catch (error) {
     return { success: false, error: "Something went wrong" };
@@ -120,6 +121,15 @@ export async function getSubCategories() {
     return { success: true, categories };
   } catch (error) {
     return { success: false, error: "Something went wrong" };
+  }
+}
+
+export async function getCategoryCount() {
+  try {
+    const categoryCount = await prisma.category.count();
+    return { success: true, categoryCount };
+  } catch (error) {
+    return { success: false };
   }
 }
 

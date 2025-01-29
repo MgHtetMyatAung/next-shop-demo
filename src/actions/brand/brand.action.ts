@@ -19,6 +19,7 @@ export async function createBrand(data: BrandType) {
     });
 
     revalidatePath("/brand");
+    revalidatePath("/");
 
     return { success: true, brand };
   } catch (error) {
@@ -38,6 +39,15 @@ export async function getBrands() {
     return { success: true, brands };
   } catch (error) {
     return { success: false, error: "Something went wrong" };
+  }
+}
+
+export async function getBrandCount() {
+  try {
+    const brandCount = await prisma.brand.count();
+    return { success: true, brandCount };
+  } catch (error) {
+    return { success: false };
   }
 }
 

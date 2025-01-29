@@ -13,6 +13,7 @@ import { createProduct } from "@/actions/product/product.action";
 import toast from "react-hot-toast";
 import LoadingUiBtn from "@/components/common/LoadingUiBtn";
 import AddVariantForm from "./AddVariantForm";
+import ImageUpload from "@/components/common/ImageUpload";
 
 export default function CreateProductForm() {
   const { loading, categories } = useCategories();
@@ -20,12 +21,16 @@ export default function CreateProductForm() {
   const { register, handleSubmit, control, reset } = useForm<ProductType>({});
   const [isLoading, setIsLoading] = useState(false);
   const [productId, setProductId] = useState<null | number>(null);
+  const [imgUrl, setImgUrl] = useState<string>("");
 
   const onSubmit = async (data: ProductType) => {
     setIsLoading(true);
     console.log(data);
     try {
-      const response = await createProduct(data);
+      const response = await createProduct({
+        ...data,
+        image: imgUrl,
+      });
       if (response.success && response.product) {
         setProductId(response.product?.id);
         toast.success("Product created Successfully !");
@@ -114,7 +119,15 @@ export default function CreateProductForm() {
               <div className=" hidden lg:block lg:col-span-1">
                 <div className="lg:border h-full w-[1px] bg-gray-200 mx-auto"></div>
               </div>
+
               <div className=" lg:col-span-4 space-y-3">
+                <div>
+                  <ImageUpload
+                    endpoint="imageUploader"
+                    value={imgUrl}
+                    onChange={(url) => setImgUrl(url)}
+                  />
+                </div>
                 <div className=" space-y-2">
                   <Label htmlFor="name">Brand</Label>
                   <BrandSelector

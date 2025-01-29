@@ -17,6 +17,7 @@ import {
   BadgeX,
   ChevronLeft,
   ChevronRight,
+  Logs,
   Pen,
   SquarePen,
 } from "lucide-react";
@@ -24,14 +25,47 @@ import { Input } from "@/components/ui/input";
 import useProducts from "@/hooks/useProducts";
 import TableSkeleton from "@/components/skeleton/TableSkeleton";
 import DeleteProductBtn from "@/components/pages/product/DeleteProductBtn";
+import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import DeleteManyProductBtn from "./DeleteManyProductBtn";
 
 export default function ProductListTable() {
   const [currentPage, handlePageChange] = useState(1);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [showCheckbox, setShowCheckbox] = useState(false);
+
   const { products, totalPages, loading, reFocus } = useProducts({
     page: currentPage,
     limit: 8,
   });
   const [search, setSearch] = useState("");
+  const handleSelectAll = () => {
+    if (selectedProducts.length === products.length) {
+      setSelectedProducts([]);
+    } else {
+      if (products) setSelectedProducts(products.map((product) => product.id!));
+    }
+  };
+  const handleSelectProduct = (productId: number) => {
+    if (selectedProducts.includes(productId)) {
+      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+    } else {
+      setSelectedProducts([...selectedProducts, productId]);
+    }
+  };
+  const handleShowCheckbox = () => {
+    if (showCheckbox) {
+      setShowCheckbox(false);
+      setSelectedProducts([]);
+    } else {
+      setShowCheckbox(true);
+    }
+  };
   return (
     <>
       <div className=" flex items-center justify-between mt-5">
@@ -42,9 +76,38 @@ export default function ProductListTable() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Link href={"/product/create"} className="">
-          <Button>Add New</Button>
-        </Link>
+        <div className=" flex items-center gap-3">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className=" border rounded-md p-2">
+                <Logs className=" size-4" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className=" max-w-[200px] space-y-2">
+              <div className=" flex items-center gap-2 cursor-pointer">
+                <Checkbox
+                  checked={showCheckbox}
+                  onCheckedChange={() => handleShowCheckbox()}
+                  id="show-checkbox"
+                />
+                <label htmlFor="show-checkbox" className=" cursor-pointer">
+                  Show Checkbox
+                </label>
+              </div>
+              <div className=" cursor-pointer">
+                <DeleteManyProductBtn
+                  ids={selectedProducts}
+                  reFresh={reFocus}
+                  disabled={selectedProducts.length === 0}
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Link href={"/product/create"} className="">
+            <Button>Add New</Button>
+          </Link>
+        </div>
       </div>
       <div className=" my-3">
         {!loading ? (
@@ -53,9 +116,17 @@ export default function ProductListTable() {
               <TableCaption>A list of your recent invoices.</TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[50px] text-gray-900 font-semibold uppercase">
+                  {showCheckbox && (
+                    <TableHead className="w-[50px] text-gray-900 font-semibold uppercase">
+                      <Checkbox
+                        checked={selectedProducts.length === products.length}
+                        onCheckedChange={handleSelectAll}
+                      />
+                    </TableHead>
+                  )}
+                  {/* <TableHead className="w-[50px] text-gray-900 font-semibold uppercase">
                     No
-                  </TableHead>
+                  </TableHead> */}
                   <TableHead className="text-gray-900 font-semibold uppercase">
                     Name
                   </TableHead>
@@ -85,10 +156,31 @@ export default function ProductListTable() {
                     .filter((item) => item.name.toLowerCase().includes(search))
                     .map((product, index) => (
                       <TableRow key={product.id}>
-                        <TableCell className="font-medium">
+                        {showCheckbox && (
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedProducts.includes(product.id!)}
+                              onCheckedChange={() =>
+                                handleSelectProduct(product.id!)
+                              }
+                            />
+                          </TableCell>
+                        )}
+                        {/* <TableCell className="font-medium">
                           {index + 1}
+                        </TableCell> */}
+                        <TableCell>
+                          <div className=" flex items-center gap-2">
+                            <Image
+                              src={product?.image || "/img/default.png"}
+                              alt="product"
+                              width={50}
+                              height={55}
+                              className=" border"
+                            />
+                            <p>{product.name}</p>
+                          </div>
                         </TableCell>
-                        <TableCell>{product.name}</TableCell>
                         <TableCell>{product.description}</TableCell>
                         <TableCell>
                           {product.published ? (
@@ -110,24 +202,26 @@ export default function ProductListTable() {
                         <TableCell className="text-right">
                           {product.price} MMK
                         </TableCell>
-                        <TableCell className=" flex justify-end items-center space-x-3">
-                          <button>
-                            <Link
-                              href={`/product/${product.id}`}
-                              className=" underline"
-                            >
-                              View
-                            </Link>
-                          </button>
-                          <button>
-                            <Link href={`/product/edit?id=${product.id}`}>
-                              <SquarePen className=" size-5" />
-                            </Link>
-                          </button>
-                          <DeleteProductBtn
-                            reFresh={reFocus}
-                            id={product.id!}
-                          />
+                        <TableCell className="">
+                          <div className="flex justify-end items-center space-x-3">
+                            <button>
+                              <Link
+                                href={`/product/${product.id}`}
+                                className=" underline"
+                              >
+                                View
+                              </Link>
+                            </button>
+                            <button>
+                              <Link href={`/product/edit?id=${product.id}`}>
+                                <SquarePen className=" size-5" />
+                              </Link>
+                            </button>
+                            <DeleteProductBtn
+                              reFresh={reFocus}
+                              id={product.id!}
+                            />
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}

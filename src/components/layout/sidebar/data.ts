@@ -30,36 +30,36 @@ import { title } from "process";
 export const applicationMenuItems = [
   {
     title: "Overview",
-    url: "#",
+    url: "/",
     icon: Home,
-    items: [
-      {
-        title: "Forms",
-        url: "#",
-      },
-      {
-        title: "Inputs",
-        url: "#",
-      },
-      {
-        title: "Datas",
-        url: "#",
-        items: [
-          {
-            title: "All",
-            url: "#",
-          },
-          {
-            title: "Filters",
-            url: "#",
-          },
-        ],
-      },
-    ],
+    // items: [
+    //   {
+    //     title: "Forms",
+    //     url: "#",
+    //   },
+    //   {
+    //     title: "Inputs",
+    //     url: "#",
+    //   },
+    //   {
+    //     title: "Datas",
+    //     url: "#",
+    //     items: [
+    //       {
+    //         title: "All",
+    //         url: "#",
+    //       },
+    //       {
+    //         title: "Filters",
+    //         url: "#",
+    //       },
+    //     ],
+    //   },
+    // ],
   },
   {
     title: "Customer",
-    url: "#",
+    url: "/customer",
     icon: Users,
   },
   {
@@ -119,16 +119,16 @@ export const controlMenuItems = [
     //   },
     // ],
   },
-  {
-    title: "Variant",
-    url: "/variant",
-    icon: Archive,
-  },
-  {
-    title: "Property",
-    url: "/property",
-    icon: Bolt,
-  },
+  // {
+  //   title: "Variant",
+  //   url: "/variant",
+  //   icon: Archive,
+  // },
+  // {
+  //   title: "Property",
+  //   url: "/property",
+  //   icon: Bolt,
+  // },
   {
     title: "Brand",
     url: "/brand",

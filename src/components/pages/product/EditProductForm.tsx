@@ -15,12 +15,14 @@ import LoadingUiBtn from "@/components/common/LoadingUiBtn";
 import FormSkeleton from "@/components/skeleton/FormSkeleton";
 import { useRouter } from "next/navigation";
 import AddVariantForm from "./AddVariantForm";
+import ImageUpload from "@/components/common/ImageUpload";
 
 export default function EditProductForm({ product }: { product: ProductType }) {
   const router = useRouter();
   const { loading: categoryLoading, categories } = useCategories();
   const { brands, loading: brandLoading } = useBrands();
   const [productId, setProductId] = useState<null | number>(null);
+  const [imgUrl, setImgUrl] = useState<string>(product.image || "");
   const { register, handleSubmit, control, reset } = useForm<ProductType>({
     defaultValues: {
       name: product.name,
@@ -43,6 +45,7 @@ export default function EditProductForm({ product }: { product: ProductType }) {
       const response = await updateProduct({
         id: product.id,
         ...data,
+        image: imgUrl,
       });
       if (response.success) {
         toast.success("Product updated Successfully !");
@@ -135,6 +138,13 @@ export default function EditProductForm({ product }: { product: ProductType }) {
                       <div className="lg:border h-full w-[1px] bg-gray-200 mx-auto"></div>
                     </div>
                     <div className=" lg:col-span-4 space-y-3">
+                      <div>
+                        <ImageUpload
+                          endpoint="imageUploader"
+                          onChange={(url) => setImgUrl(url)}
+                          value={imgUrl}
+                        />
+                      </div>
                       <div className=" space-y-2">
                         <Label htmlFor="name">Brand</Label>
                         <BrandSelector

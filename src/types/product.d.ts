@@ -8,4 +8,5 @@ type ProductType = {
   brandId?: number | null;
   published: boolean;
   out_of_stock: boolean;
+  image?: string | null;
 };

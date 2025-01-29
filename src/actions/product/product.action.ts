@@ -16,9 +16,11 @@ export async function createProduct(data: ProductType) {
         brandId: Number(data.brandId) !== 0 ? Number(data.brandId) : null,
         published: data.published,
         out_of_stock: data.out_of_stock,
+        image: data.image,
       },
     });
     revalidatePath("/product");
+    revalidatePath("/");
     return { success: true, product };
   } catch (error) {
     console.log("error");
@@ -48,6 +50,7 @@ export async function getProducts({
         stock: true,
         published: true,
         out_of_stock: true,
+        image: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -55,6 +58,15 @@ export async function getProducts({
     });
 
     return { success: true, products, totalPages, totalItems };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getProductCount() {
+  try {
+    const productCount = await prisma.product.count();
+    return { success: true, productCount };
   } catch (error) {
     return { success: false };
   }
@@ -77,6 +89,7 @@ export async function getProductDetail(id: number) {
         stock: true,
         published: true,
         out_of_stock: true,
+        image: true,
         brandId: true,
         categoryId: true,
         category: {
@@ -128,6 +141,7 @@ export async function updateProduct(data: ProductType) {
         brandId: Number(data.brandId) !== 0 ? Number(data.brandId) : null,
         published: data.published,
         out_of_stock: data.out_of_stock,
+        image: data.image,
       },
     });
     revalidatePath("/");
@@ -146,6 +160,26 @@ export async function deleteProduct(id: number) {
     await prisma.product.delete({
       where: {
         id,
+      },
+    });
+    revalidatePath("/product");
+    return { success: true };
+  } catch (error) {
+    console.log("error");
+    return { success: false };
+  }
+}
+
+export async function deleteManyProductById(ids: number[]) {
+  try {
+    if (!ids) {
+      return { success: false };
+    }
+    await prisma.product.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
       },
     });
     revalidatePath("/product");
