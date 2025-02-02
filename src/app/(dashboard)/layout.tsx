@@ -1,6 +1,6 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import AdminAuthProvider from "@/provider/AdminAuthProvider";
 import React from "react";
-import { Toaster } from "react-hot-toast";
 
 export default function DashboardRootLayout({
   children,
@@ -9,10 +9,11 @@ export default function DashboardRootLayout({
 }>) {
   return (
     <>
-      <DashboardLayout>
-        <main>{children}</main>
-        <Toaster />
-      </DashboardLayout>
+      <AdminAuthProvider>
+        <DashboardLayout>
+          <main>{children}</main>
+        </DashboardLayout>
+      </AdminAuthProvider>
     </>
   );
 }

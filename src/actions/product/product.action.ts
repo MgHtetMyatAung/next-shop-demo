@@ -21,6 +21,7 @@ export async function createProduct(data: ProductType) {
     });
     revalidatePath("/product");
     revalidatePath("/");
+    revalidatePath("/view");
     return { success: true, product };
   } catch (error) {
     console.log("error");
@@ -122,6 +123,87 @@ export async function getProductDetail(id: number) {
   }
 }
 
+export async function getLatestProducts(total: number) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        published: true,
+      },
+      take: total,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        out_of_stock: true,
+        image: true,
+        brandId: true,
+        brand: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        promotion: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            type: true,
+            discount: true,
+            cashback: true,
+            isBOGO: true,
+            isActive: true,
+            startDate: true,
+            endDate: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return { success: true, products };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getAllProducts() {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        collectionId: null,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return { success: true, products };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getAllProductsByPromotion() {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        promotionId: null,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return { success: true, products };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
 export async function updateProduct(data: ProductType) {
   try {
     if (!data.id) {
@@ -145,6 +227,7 @@ export async function updateProduct(data: ProductType) {
       },
     });
     revalidatePath("/");
+    revalidatePath("/view");
     return { success: true, product };
   } catch (error) {
     console.log("error");

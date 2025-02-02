@@ -11,18 +11,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllPromotions } from "@/actions/promotion/promotion.action";
+import { getAllCollections } from "@/actions/collection/collection.action";
 import { Badge } from "@/components/ui/badge";
+import DeleteCollectionBtn from "@/components/pages/collection/DeleteCollectionBtn";
 import { SquarePen } from "lucide-react";
-import DeletePromotionBtn from "@/components/pages/promotion/DeletePromotionBtn";
 
-export default async function PromotionPage() {
-  const data = await getAllPromotions();
+export default async function CollectionPage() {
+  const data = await getAllCollections();
   return (
     <div>
-      <BreadCrumb title="Promotion" />
+      <BreadCrumb title="Collection" />
       <div className="">
-        <Link href={"/promotion/create"} className=" block w-fit ms-auto">
+        <Link href={"/collection/create"} className=" block w-fit ms-auto">
           <Button>Add New</Button>
         </Link>
       </div>
@@ -37,14 +37,8 @@ export default async function PromotionPage() {
               <TableHead className="text-gray-900 font-semibold uppercase">
                 Name
               </TableHead>
-              {/* <TableHead className="text-gray-900 font-semibold uppercase">
+              <TableHead className="text-gray-900 font-semibold uppercase">
                 Description
-              </TableHead> */}
-              <TableHead className="text-gray-900 font-semibold uppercase">
-                Type
-              </TableHead>
-              <TableHead className="text-gray-900 font-semibold uppercase">
-                Amount
               </TableHead>
               <TableHead className="lg:w-[350px] text-gray-900 font-semibold uppercase">
                 Products
@@ -54,36 +48,29 @@ export default async function PromotionPage() {
               </TableHead>
             </TableRow>
           </TableHeader>
-          {data.promotions && (
+          {data.collections && (
             <TableBody>
-              {data.promotions.map((promotion, index) => (
-                <TableRow key={promotion.id}>
+              {data.collections.map((collection, index) => (
+                <TableRow key={collection.id}>
                   <TableCell className="font-medium">{index + 1}</TableCell>
-                  <TableCell>{promotion.title}</TableCell>
-                  {/* <TableCell>{promotion.description}</TableCell> */}
-                  <TableCell>{promotion.type}</TableCell>
-                  <TableCell>
-                    {promotion.type === "DISCOUNT" ? (
-                      <span>{promotion.discount} %</span>
-                    ) : promotion.type === "CASHBACK" ? (
-                      <span>{promotion.cashback} MMK</span>
-                    ) : null}
-                  </TableCell>
+                  <TableCell>{collection.name}</TableCell>
+                  <TableCell>{collection.description}</TableCell>
                   <TableCell className=" flex flex-wrap gap-2">
-                    {promotion.products.map((product) => (
+                    {collection.products.map((product) => (
                       <Badge key={product.id}>{product.name}</Badge>
                     ))}
                   </TableCell>
                   <TableCell className="text-right space-x-2">
+                    {/* <EditForm {...brand} /> <DeleteBrandBtn id={brand.id} /> */}
                     <button>
                       <Link
                         className=" block w-fit"
-                        href={`/promotion/edit?id=${promotion.id}`}
+                        href={`/collection/edit?id=${collection.id}`}
                       >
                         <SquarePen className=" size-5" />
                       </Link>
                     </button>
-                    <DeletePromotionBtn id={promotion.id} />
+                    <DeleteCollectionBtn id={collection.id} />
                   </TableCell>
                 </TableRow>
               ))}

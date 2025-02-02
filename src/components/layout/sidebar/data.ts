@@ -11,6 +11,7 @@ import {
   Inbox,
   LaptopMinimal,
   Layers2,
+  LibraryBig,
   MessageSquareText,
   Notebook,
   NotebookPen,
@@ -18,6 +19,7 @@ import {
   Settings,
   Shapes,
   ShoppingBag,
+  Store,
   Ticket,
   Trash,
   UserCog,
@@ -73,7 +75,7 @@ export const applicationMenuItems = [
     icon: Inbox,
   },
   {
-    title: "Message",
+    title: "Request",
     url: "#",
     icon: MessageSquareText,
   },
@@ -139,6 +141,11 @@ export const controlMenuItems = [
     url: "/promotion",
     icon: HandCoins,
   },
+  {
+    title: "Collection",
+    url: "/collection",
+    icon: LibraryBig,
+  },
   //   {
   //     title: "Events",
   //     url: "#",
@@ -157,14 +164,19 @@ export const controlMenuItems = [
 ];
 
 export const supportMenuItems = [
+  // {
+  //   title: "Trash",
+  //   url: "#",
+  //   icon: Trash,
+  // },
   {
-    title: "Trash",
-    url: "#",
-    icon: Trash,
+    title: "User View",
+    url: "/view",
+    icon: Store,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/setting",
     icon: Settings,
   },
 ];

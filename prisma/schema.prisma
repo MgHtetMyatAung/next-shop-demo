@@ -52,8 +52,10 @@ model Product {
   Wishlist     Wishlist[]
   variants     Variant[] // One product can have many variants
   attributes   Attribute[] // Additional attributes for the product
+  Collection   Collection? @relation(fields: [collectionId], references: [id])
+  collectionId Int?
 
-  @@index([categoryId, promotionId, brandId])
+  @@index([categoryId, promotionId, brandId, collectionId])
 }
 
 model Variant {
@@ -187,13 +189,15 @@ model Brand {
 
 model Promotion {
   id          Int           @id @default(autoincrement())
-  code        String        @unique // e.g., "SUMMER2025"
+  // code        String        @unique // e.g., "SUMMER2025"
   title       String // Promotion title
   description String? // Optional description
   type        PromotionType // ENUM: DISCOUNT, CASHBACK, BUY1GET1
   discount    Float? // For percentage or fixed amount discounts
   cashback    Float? // For cashback promotions
   isBOGO      Boolean? // True if "Buy 1 Get 1" applies
+  isActive    Boolean       @default(false) // Whether the promotion is currently active
+  imageUrl    String? // URL to the promotion image
   startDate   DateTime
   endDate     DateTime
   createdAt   DateTime      @default(now())
@@ -201,12 +205,23 @@ model Promotion {
   products    Product[] // Associated products
 }
 
+model Collection {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  imageUrl    String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model Setting {
   id                      Int          @id @default(autoincrement())
-  storeName               String       @default("My E-Commerce Store")
+  storeName               String
   defaultLanguage         LanguageType @default(ENGLISH) // Language support
   allowOutOfStockPurchase Boolean      @default(false) // Allow purchases for out-of-stock items
   autoPublish             Boolean      @default(false) // Automatically publish new products
+  bannerImageUrl          String?
   createdAt               DateTime     @default(now())
   updatedAt               DateTime     @updatedAt
 }
