@@ -47,8 +47,8 @@ export default async function ProductDetailPage({
                 <Image
                   src={product?.image || "/img/default.png"}
                   alt="product"
-                  width={500}
-                  height={500}
+                  width={400}
+                  height={400}
                   className=" w-full h-auto"
                 />
                 {product.promotion && product.promotion.type === "BUY1GET1" && (
