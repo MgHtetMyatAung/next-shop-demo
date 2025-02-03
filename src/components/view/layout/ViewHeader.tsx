@@ -10,7 +10,7 @@ export default async function ViewHeader() {
     <header className=" shadow">
       <nav className=" container flex justify-between items-center h-[60px]">
         <div>
-          <Link href="/view" className=" text-xl font-semibold">
+          <Link href="/view" className=" text-xl font-semibold text-blue-800">
             {setting?.storeName || "Store Name"}
           </Link>
         </div>

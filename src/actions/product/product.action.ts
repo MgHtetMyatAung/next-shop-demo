@@ -115,6 +115,19 @@ export async function getProductDetail(id: number) {
             size: true,
           },
         },
+        promotion: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            type: true,
+            discount: true,
+            cashback: true,
+            isActive: true,
+            startDate: true,
+            endDate: true,
+          },
+        },
       },
     });
     return { success: true, product };
@@ -130,6 +143,52 @@ export async function getLatestProducts(total: number) {
         published: true,
       },
       take: total,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        stock: true,
+        out_of_stock: true,
+        image: true,
+        brandId: true,
+        brand: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        promotion: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            type: true,
+            discount: true,
+            cashback: true,
+            isBOGO: true,
+            isActive: true,
+            startDate: true,
+            endDate: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return { success: true, products };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getAllProductLists() {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        published: true,
+      },
       select: {
         id: true,
         name: true,

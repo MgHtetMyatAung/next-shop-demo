@@ -1,6 +1,14 @@
+import { getSetting } from "@/actions/setting/setting.action";
 import OurNewProducts from "@/components/view/home/OurNewProducts";
 import Image from "next/image";
 import React from "react";
+
+export async function generateMetadata({}: {}) {
+  const setting = await getSetting();
+  return {
+    title: "Home" + " | " + setting?.storeName,
+  };
+}
 
 export default function ViewPage() {
   return (

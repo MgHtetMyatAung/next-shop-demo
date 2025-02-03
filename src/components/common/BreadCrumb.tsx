@@ -13,16 +13,18 @@ import { usePathname } from "next/navigation";
 export default function BreadCrumb({
   title,
   links,
+  homeRoute = "/",
 }: {
   title: string;
   links?: { name: string; link: string }[];
+  homeRoute?: string;
 }) {
   const pathname = usePathname();
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href={homeRoute}>Home</BreadcrumbLink>
         </BreadcrumbItem>
         {/* <BreadcrumbSeparator />
         <BreadcrumbItem>
