@@ -22,16 +22,24 @@ export async function createSetting(data: Setting) {
 
 export async function getSetting() {
   try {
-    const setting = await prisma.setting.findFirst();
-    return setting;
+    const setting = await prisma.setting.findFirst({
+      select: {
+        id: true,
+        storeName: true,
+        defaultLanguage: true,
+        allowOutOfStockPurchase: true,
+        autoPublish: true,
+      },
+    });
+    return { success: true, setting };
   } catch (error) {
-    throw new Error("Failed to get setting");
+    return { success: false };
   }
 }
 
 export async function updateSetting(data: Setting) {
   try {
-    await prisma.setting.update({
+    const setting = await prisma.setting.update({
       where: { id: data.id },
       data: {
         storeName: data.storeName,
@@ -41,7 +49,7 @@ export async function updateSetting(data: Setting) {
       },
     });
     revalidatePath("/view");
-    return { success: true };
+    return { success: true, setting };
   } catch (error) {
     return { success: false };
   }

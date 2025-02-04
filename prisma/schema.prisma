@@ -241,6 +241,24 @@ model Translation {
   language   Language @relation(fields: [languageId], references: [id])
 }
 
+model Alert {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Request {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   ADMIN
   USER

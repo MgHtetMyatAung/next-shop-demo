@@ -4,9 +4,9 @@ import ProductCard from "@/components/view/product/ProductCard";
 import React from "react";
 
 export async function generateMetadata({}: {}) {
-  const setting = await getSetting();
+  const data = await getSetting();
   return {
-    title: "Products" + " | " + setting?.storeName,
+    title: "Products" + " | " + data.setting?.storeName,
   };
 }
 

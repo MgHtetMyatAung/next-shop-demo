@@ -1,12 +1,14 @@
 import { getSetting } from "@/actions/setting/setting.action";
+import CollectionProducts from "@/components/view/home/CollectionProducts";
+import NewsTicker from "@/components/view/home/NewTricker";
 import OurNewProducts from "@/components/view/home/OurNewProducts";
 import Image from "next/image";
 import React from "react";
 
 export async function generateMetadata({}: {}) {
-  const setting = await getSetting();
+  const data = await getSetting();
   return {
-    title: "Home" + " | " + setting?.storeName,
+    title: "Home" + " | " + data.setting?.storeName,
   };
 }
 
@@ -29,8 +31,10 @@ export default function ViewPage() {
           className=" w-full h-auto md:hidden"
         />
       </div>
+      <NewsTicker />
       <div>
         <OurNewProducts />
+        <CollectionProducts />
       </div>
     </div>
   );

@@ -4,7 +4,8 @@ import SettingForm from "@/components/pages/setting/SettingForm";
 import React from "react";
 
 export default async function SettingPage() {
-  const setting = await getSetting();
+  const { setting } = await getSetting();
+  if (!setting) return null;
   return (
     <div>
       <BreadCrumb title="Setting" />

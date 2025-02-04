@@ -5,7 +5,7 @@ import { navItems } from "./data";
 import { getSetting } from "@/actions/setting/setting.action";
 
 export default async function ViewHeader() {
-  const setting = await getSetting();
+  const { setting } = await getSetting();
   return (
     <header className=" shadow">
       <nav className=" container flex justify-between items-center h-[60px]">

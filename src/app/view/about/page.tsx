@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getSetting } from "@/actions/setting/setting.action";
 
 export async function generateMetadata({}: {}) {
-  const setting = await getSetting();
+  const data = await getSetting();
   return {
-    title: "About Us" + " | " + setting?.storeName,
+    title: "About Us" + " | " + data.setting?.storeName,
   };
 }
 

@@ -4,9 +4,9 @@ import ContactInfo from "@/components/view/contact/ContactInfo";
 import Map from "@/components/view/contact/Map";
 
 export async function generateMetadata({}: {}) {
-  const setting = await getSetting();
+  const data = await getSetting();
   return {
-    title: "Contact Us" + " | " + setting?.storeName,
+    title: "Contact Us" + " | " + data.setting?.storeName,
   };
 }
 

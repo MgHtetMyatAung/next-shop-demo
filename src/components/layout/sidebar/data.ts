@@ -12,6 +12,7 @@ import {
   LaptopMinimal,
   Layers2,
   LibraryBig,
+  Megaphone,
   MessageSquareText,
   Notebook,
   NotebookPen,
@@ -76,7 +77,7 @@ export const applicationMenuItems = [
   },
   {
     title: "Request",
-    url: "#",
+    url: "/request-message",
     icon: MessageSquareText,
   },
 ];
@@ -173,6 +174,11 @@ export const supportMenuItems = [
     title: "User View",
     url: "/view",
     icon: Store,
+  },
+  {
+    title: "Alert",
+    url: "/alert",
+    icon: Megaphone,
   },
   {
     title: "Settings",

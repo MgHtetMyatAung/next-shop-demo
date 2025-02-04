@@ -12,9 +12,9 @@ export async function generateMetadata({
 }) {
   const id = (await params).id;
   const post = await getProductDetail(Number(id));
-  const setting = await getSetting();
+  const data = await getSetting();
   return {
-    title: post.product?.name + " | " + setting?.storeName,
+    title: post.product?.name + " | " + data.setting?.storeName,
     description: post.product?.description,
   };
 }

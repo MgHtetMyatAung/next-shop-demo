@@ -10,6 +10,15 @@ const config: Config = withUt({
   ],
   theme: {
     extend: {
+      animation: {
+        marquee: "marquee 18s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(100%)" },
+          to: { transform: "translateX(-100%)" },
+        },
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

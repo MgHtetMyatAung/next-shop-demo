@@ -9,7 +9,7 @@ export default async function OurNewProducts() {
     return <div>Error</div>;
   }
   return (
-    <div className=" container mt-10">
+    <div className=" container mt-5 lg:mt-10">
       <h3 className=" text-lg md:text-2xl font-semibold">
         Our Latest Products
       </h3>
