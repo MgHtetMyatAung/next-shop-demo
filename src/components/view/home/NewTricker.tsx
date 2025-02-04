@@ -24,7 +24,7 @@ export default function NewTricker() {
             <Megaphone />
             Noti for customer !
           </AlertDialogTitle>
-          <AlertDialogDescription className=" text-white">
+          <AlertDialogDescription className=" text-white leading-7">
             Online မှ မှာယူသော customer များအတွက် ယုံကြည်စိတ်ချရသော Delivery
             services များနှင့် အိမ်အရောက် ပို့ဆောင်ပေးပါသည်။
           </AlertDialogDescription>
