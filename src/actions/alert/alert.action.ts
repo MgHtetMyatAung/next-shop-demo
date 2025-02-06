@@ -9,6 +9,8 @@ export async function createAlert(data: Alert) {
         title: data.title,
         message: data.message,
         isActive: data.isActive,
+        imageUrl: data.imageUrl,
+        linkUrl: data.linkUrl,
       },
     });
     return { success: true, alert };
@@ -19,7 +21,16 @@ export async function createAlert(data: Alert) {
 
 export async function getAlert() {
   try {
-    const alert = await prisma.alert.findFirst();
+    const alert = await prisma.alert.findFirst({
+      select: {
+        id: true,
+        title: true,
+        message: true,
+        isActive: true,
+        imageUrl: true,
+        linkUrl: true,
+      },
+    });
     return { success: true, alert };
   } catch (error) {
     return { success: false, error };
@@ -34,6 +45,8 @@ export async function updateAlert(data: Alert) {
         title: data.title,
         message: data.message,
         isActive: data.isActive,
+        imageUrl: data.imageUrl,
+        linkUrl: data.linkUrl,
       },
     });
     return { success: true, alert };

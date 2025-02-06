@@ -10,24 +10,54 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { useAlertStore } from "@/hooks/useAlertStore";
 import { Megaphone, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function NewTricker() {
+export default function NewTricker({ alert }: { alert: Alert }) {
   const { isOpen, toggleAlert } = useAlertStore();
   return (
     <AlertDialog open={isOpen} onOpenChange={toggleAlert}>
       <AlertDialogTrigger></AlertDialogTrigger>
-      <AlertDialogContent className=" w-[90%] sm:w-auto rounded-md bg-[#100d46]">
+      <AlertDialogContent
+        className={`border-0 w-[90%] sm:w-[400px] rounded-md ${
+          alert.imageUrl && "p-0"
+        }`}
+      >
         <AlertDialogHeader>
-          <AlertDialogTitle className=" text-yellow-300 text-center flex gap-3 justify-center">
-            <Megaphone />
-            Noti for customer !
+          {alert.imageUrl && (
+            <div className="">
+              <Image
+                src={alert.imageUrl}
+                width={500}
+                height={200}
+                alt="alert-img"
+                className=" w-full h-auto rounded-t-md rounded-b-2xl mb-2"
+              />
+            </div>
+          )}
+          <AlertDialogTitle
+            className={` text-gray-900 text-center flex gap-3 justify-center ${
+              alert.imageUrl && "px-6"
+            }`}
+          >
+            {/* <Megaphone /> */}
+            {alert.title}
           </AlertDialogTitle>
-          <AlertDialogDescription className=" text-white leading-7">
-            Online မှ မှာယူသော customer များအတွက် ယုံကြည်စိတ်ချရသော Delivery
-            services များနှင့် အိမ်အရောက် ပို့ဆောင်ပေးပါသည်။
+          <AlertDialogDescription
+            className={`text-gray-900 leading-7  ${
+              alert.imageUrl && "px-6 pb-3"
+            }`}
+          >
+            {alert.message}
           </AlertDialogDescription>
+          {alert.linkUrl && (
+            <button className=" w-[90%] mx-auto underline text-blue-800">
+              <Link href={alert.linkUrl || ""}>Get Now</Link>
+            </button>
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter className="">
           {/* <AlertDialogCancel>Close</AlertDialogCancel> */}

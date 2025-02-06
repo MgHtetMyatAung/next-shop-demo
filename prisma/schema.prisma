@@ -218,6 +218,7 @@ model Collection {
 model Setting {
   id                      Int          @id @default(autoincrement())
   storeName               String
+  logoUrl                 String?
   defaultLanguage         LanguageType @default(ENGLISH) // Language support
   allowOutOfStockPurchase Boolean      @default(false) // Allow purchases for out-of-stock items
   autoPublish             Boolean      @default(false) // Automatically publish new products
@@ -245,6 +246,8 @@ model Alert {
   id        Int      @id @default(autoincrement())
   title     String
   message   String
+  imageUrl  String?
+  linkUrl   String?
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
