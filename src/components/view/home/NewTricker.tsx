@@ -54,7 +54,10 @@ export default function NewTricker({ alert }: { alert: Alert }) {
             {alert.message}
           </AlertDialogDescription>
           {alert.linkUrl && (
-            <button className=" w-[90%] mx-auto underline text-blue-800">
+            <button
+              className=" w-[90%] mx-auto underline text-blue-800"
+              onClick={toggleAlert}
+            >
               <Link href={alert.linkUrl || ""}>Get Now</Link>
             </button>
           )}
@@ -64,7 +67,7 @@ export default function NewTricker({ alert }: { alert: Alert }) {
           {/* <AlertDialogAction>Continue</AlertDialogAction> */}
           <button
             onClick={toggleAlert}
-            className=" absolute -top-2 -right-2 size-7 bg-white rounded-full"
+            className=" absolute -top-2 -right-2 size-7 bg-white rounded-full border-2 border-gray-800"
           >
             <X className=" size-5 mx-auto" />
           </button>
