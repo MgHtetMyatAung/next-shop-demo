@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function createAlert(data: Alert) {
   try {
@@ -13,6 +14,7 @@ export async function createAlert(data: Alert) {
         linkUrl: data.linkUrl,
       },
     });
+    revalidatePath("/alert");
     return { success: true, alert };
   } catch (error) {
     return { success: false, error };
@@ -49,6 +51,7 @@ export async function updateAlert(data: Alert) {
         linkUrl: data.linkUrl,
       },
     });
+    revalidatePath("/alert");
     return { success: true, alert };
   } catch (error) {
     return { success: false, error };
