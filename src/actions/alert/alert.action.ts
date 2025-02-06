@@ -15,6 +15,7 @@ export async function createAlert(data: Alert) {
       },
     });
     revalidatePath("/alert");
+    revalidatePath("/view");
     return { success: true, alert };
   } catch (error) {
     return { success: false, error };
@@ -52,6 +53,7 @@ export async function updateAlert(data: Alert) {
       },
     });
     revalidatePath("/alert");
+    revalidatePath("/view");
     return { success: true, alert };
   } catch (error) {
     return { success: false, error };
