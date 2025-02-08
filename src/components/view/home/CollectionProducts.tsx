@@ -2,6 +2,8 @@ import { getAllCollections } from "@/actions/collection/collection.action";
 import React from "react";
 import ProductCard from "../product/ProductCard";
 
+export const revalidate = 300;
+
 export default async function CollectionProducts() {
   const { success, collections } = await getAllCollections();
   if (!success) {

@@ -2,6 +2,8 @@ import { getAllPromotions } from "@/actions/promotion/promotion.action";
 import ProductCard from "@/components/view/product/ProductCard";
 import Image from "next/image";
 
+export const revalidate = 300;
+
 export default async function page() {
   const { success, promotions } = await getAllPromotions();
   if (!success) {

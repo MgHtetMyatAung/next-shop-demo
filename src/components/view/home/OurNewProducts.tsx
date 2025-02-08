@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import ProductCard from "../product/ProductCard";
 
+export const revalidate = 300;
+
 export default async function OurNewProducts() {
   const { success, products } = await getLatestProducts(8);
   if (!success) {

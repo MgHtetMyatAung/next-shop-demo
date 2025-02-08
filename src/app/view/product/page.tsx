@@ -4,6 +4,8 @@ import ProductCard from "@/components/view/product/ProductCard";
 import Image from "next/image";
 import React from "react";
 
+export const revalidate = 300;
+
 export async function generateMetadata({}: {}) {
   const data = await getSetting();
   return {

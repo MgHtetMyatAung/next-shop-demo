@@ -5,6 +5,8 @@ import ProductDetailBox from "@/components/pages/product/ProductDetailBox";
 import Image from "next/image";
 import React from "react";
 
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: {
