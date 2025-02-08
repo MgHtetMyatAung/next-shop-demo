@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }: any) {
+  // console.log(product, "pp");
   const router = useRouter();
   const goDetail = () => {
     router.push(`/view/product/${product.id}`);

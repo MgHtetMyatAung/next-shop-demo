@@ -9,7 +9,7 @@ export default async function EditCollectionPage({
   searchParams: { id: string };
 }) {
   const data = await getCollectionById(Number(searchParams.id));
-  console.log(data, "data", searchParams.id);
+  // console.log(data, "data", searchParams.id);
   return (
     <div>
       <BackBtn />

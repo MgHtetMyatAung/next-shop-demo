@@ -1,5 +1,5 @@
 import { getSetting } from "@/actions/setting/setting.action";
-import AlertBox from "@/components/view/home/AlertBox";
+// import AlertBox from "@/components/view/home/AlertBox";
 import CollectionProducts from "@/components/view/home/CollectionProducts";
 import OurNewProducts from "@/components/view/home/OurNewProducts";
 import Image from "next/image";
@@ -28,10 +28,9 @@ export default function ViewPage() {
           alt="banner"
           width={1920}
           height={500}
-          className=" w-full h-[180px] object-cover md:hidden"
+          className=" w-full h-[150px] object-cover md:hidden"
         />
       </div>
-      <AlertBox />
       <div>
         <OurNewProducts />
         <CollectionProducts />
