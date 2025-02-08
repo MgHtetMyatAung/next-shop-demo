@@ -27,8 +27,8 @@ export default function CategoryView() {
       <h3 className=" container text-lg md:text-2xl font-semibold ">
         Categories
       </h3>
-      <div className=" px-[1rem] sm:px-0 sm:container w-full overflow-x-auto mb-3">
-        <div className="category-list flex whitespace-nowrap gap-3 pb-2">
+      <div className="category-list px-[1rem] sm:px-0 sm:container w-full overflow-x-auto mb-3">
+        <div className="flex whitespace-nowrap gap-3 pb-2">
           {categories.map((category) => (
             <div key={category.id} className=" flex-none">
               <button className=" py-2 px-5 rounded-full border shadow bg-gray-100 text-yellow-950 font-[600]">

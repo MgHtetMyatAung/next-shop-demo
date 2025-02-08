@@ -30,6 +30,10 @@ body::-webkit-scrollbar-thumb {
   height: 0px;
 }
 
+.category-list::-webkit-scrollbar-thumb {
+  background: #fcfcfc;
+}
+
 /* custom ui for scroll bar  */
 
 @layer utilities {
