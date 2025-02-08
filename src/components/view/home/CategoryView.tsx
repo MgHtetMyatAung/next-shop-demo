@@ -8,10 +8,10 @@ export default function CategoryView() {
   const fakeArr = Array.from({ length: 10 });
   if (loading)
     return (
-      <div className="container space-y-3 py-5 ">
+      <div className="container space-y-3 lg:py-5 ">
         <Skeleton className=" w-full h-[40px]"></Skeleton>
-        <div className=" w-full overflow-x-auto mb-3">
-          <div className="category-list flex whitespace-nowrap gap-3 pb-2">
+        <div className="category-list w-full overflow-x-auto mb-3">
+          <div className=" flex whitespace-nowrap gap-3 pb-2">
             {fakeArr.map((_, idx) => (
               <div key={idx} className=" flex-none">
                 <Skeleton className=" w-[100px] h-[45px] rounded-full"></Skeleton>
