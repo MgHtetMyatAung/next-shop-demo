@@ -1,5 +1,6 @@
 import { getSetting } from "@/actions/setting/setting.action";
 import AlertBox from "@/components/view/home/AlertBox";
+import CategoryView from "@/components/view/home/CategoryView";
 // import AlertBox from "@/components/view/home/AlertBox";
 import CollectionProducts from "@/components/view/home/CollectionProducts";
 import OurNewProducts from "@/components/view/home/OurNewProducts";
@@ -33,6 +34,7 @@ export default function ViewPage() {
         />
       </div>
       <AlertBox />
+      <CategoryView />
       <div>
         <OurNewProducts />
         <CollectionProducts />
