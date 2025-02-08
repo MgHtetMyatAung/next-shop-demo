@@ -20,7 +20,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <SideBarHeading title="Next Commerce" />
+        <SideBarHeading title="Dashboard" />
       </SidebarHeader>
       <SidebarContent className=" scroll-bar-fit gap-0">
         <SidebarGroup>
