@@ -21,7 +21,11 @@ export async function createRequestMessage(data: RequestMessage) {
 
 export async function getRequestMessage() {
   try {
-    const request = await prisma.request.findMany();
+    const request = await prisma.request.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     return { success: true, request };
   } catch (error) {
     return { success: false, error };

@@ -1,4 +1,5 @@
 import { getSetting } from "@/actions/setting/setting.action";
+import AlertBox from "@/components/view/home/AlertBox";
 // import AlertBox from "@/components/view/home/AlertBox";
 import CollectionProducts from "@/components/view/home/CollectionProducts";
 import OurNewProducts from "@/components/view/home/OurNewProducts";
@@ -31,6 +32,7 @@ export default function ViewPage() {
           className=" w-full h-[150px] object-cover md:hidden"
         />
       </div>
+      <AlertBox />
       <div>
         <OurNewProducts />
         <CollectionProducts />

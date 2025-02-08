@@ -152,6 +152,7 @@ export async function getLatestProducts(total: number) {
         out_of_stock: true,
         image: true,
         brandId: true,
+        published: true,
         brand: {
           select: {
             id: true,
@@ -198,6 +199,7 @@ export async function getAllProductLists() {
         out_of_stock: true,
         image: true,
         brandId: true,
+        published: true,
         brand: {
           select: {
             id: true,

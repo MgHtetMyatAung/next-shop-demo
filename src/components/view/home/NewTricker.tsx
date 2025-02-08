@@ -20,7 +20,7 @@ export default function NewTricker({ alert }: { alert: Alert }) {
   const { isOpen, toggleAlert } = useAlertStore();
   return (
     <AlertDialog open={isOpen} onOpenChange={toggleAlert}>
-      <AlertDialogTrigger></AlertDialogTrigger>
+      <AlertDialogTrigger className=" h-0"></AlertDialogTrigger>
       <AlertDialogContent
         className={`border-0 w-[90%] sm:w-[400px] rounded-md ${
           alert.imageUrl && "p-0"
