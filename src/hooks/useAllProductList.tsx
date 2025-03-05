@@ -1,32 +1,15 @@
-"use client";
-
 import { getAllProductLists } from "@/actions/product/product.action";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useAllProductList() {
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const res = await getAllProductLists();
-      if (res.success && res.products) {
-        setProducts(res.products);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["allProductList"],
+    queryFn: async () => await getAllProductLists(),
+  });
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
   return {
-    products,
-    loading,
-    error,
+    products: data?.products || [],
+    loading: isLoading,
+    error: error,
   };
 }

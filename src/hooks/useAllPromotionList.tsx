@@ -1,32 +1,15 @@
-"use client";
-
 import { getAllPromotions } from "@/actions/promotion/promotion.action";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useAllPromotionList() {
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const fetchPromotions = async () => {
-    setLoading(true);
-    try {
-      const res = await getAllPromotions();
-      if (res.success && res.promotions) {
-        setPromotions(res.promotions);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["allPromotionList"],
+    queryFn: async () => await getAllPromotions(),
+  });
 
-  useEffect(() => {
-    fetchPromotions();
-  }, []);
   return {
-    promotions,
-    loading,
-    error,
+    promotions: data?.promotions || [],
+    loading: isLoading,
+    error: error,
   };
 }

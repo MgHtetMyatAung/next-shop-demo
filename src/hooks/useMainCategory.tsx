@@ -1,32 +1,16 @@
-"use client";
-
 import { getMainCategories } from "@/actions/category/category.action";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 export default function useMainCategory() {
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const fetchCategories = async () => {
-    setLoading(true);
-    try {
-      const res = await getMainCategories();
-      if (res.success && res.categories) {
-        setCategories(res.categories);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["mainCategory"],
+    queryFn: async () => await getMainCategories(),
+  });
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
   return {
-    categories,
-    loading,
-    error,
+    categories: data?.categories || [],
+    loading: isLoading,
+    error: error,
   };
 }
