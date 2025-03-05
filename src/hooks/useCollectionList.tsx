@@ -1,30 +1,19 @@
-import { getAllCollections } from "@/actions/collection/collection.action";
-import React, { useEffect, useState } from "react";
+import api from "@/config/axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function useCollectionList() {
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const fetchCollections = async () => {
-    setLoading(true);
-    try {
-      const res = await getAllCollections();
-      if (res.success && res.collections) {
-        setCollections(res.collections);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  const fetchCollectionList = async () => {
+    const res = await api.get("/product/collection");
+    return res.data.collections;
   };
-
-  useEffect(() => {
-    fetchCollections();
-  }, []);
-  return {
-    collections,
-    loading,
+  const {
+    data: collections,
+    isLoading,
     error,
-  };
+  } = useQuery({
+    queryKey: ["collection-list"],
+    queryFn: fetchCollectionList,
+  });
+  console.log(collections, "collections");
+  return { collections: collections, isLoading, error };
 }
