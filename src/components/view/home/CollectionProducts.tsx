@@ -17,7 +17,9 @@ export default function CollectionProducts() {
       const res = await getProductCollections();
       return res;
     },
+    refetchOnWindowFocus: false,
   });
+  console.log(isLoading);
   const fakeArr = new Array(5).fill(0);
   if (error) {
     return <div>Error</div>;
